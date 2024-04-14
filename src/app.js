@@ -1,5 +1,11 @@
 import express from "express";
 import cors from "cors";
+import { apiError } from "./middlewares/apiError.js";
+
+// Importing Routes
+import productRoute from "./routes/product.route.js";
+import userRoute from "./routes/user.route.js";
+
 
 const app = express();
 
@@ -16,18 +22,12 @@ if (process.env.NODE_ENV === "production") {
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 
-// Importing Routes
-import productRoute from "./routes/product.route.js";
-import userRoute from "./routes/user.route.js";
-
-
-
 
 // Routes
 app.use("/api/product", productRoute);
 app.use("/api/user", userRoute);
 
-
-
+// Error Handling
+app.use(apiError);
 
 export default app;
