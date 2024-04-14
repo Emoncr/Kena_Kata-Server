@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
+model User {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   email    String @unique
@@ -24,7 +24,7 @@ model Users {
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
 }
 
-model Coustomers {
+model Coustomer {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
   email     String
@@ -71,7 +71,7 @@ model Product {
   Category   Category @relation(fields: [categoryId], references: [id]) // ONE TO MANY REALTION WITH CATEGORY
 
   customarIds String[]     @db.ObjectId
-  coustomers  Coustomers[] @relation(fields: [customarIds], references: [id]) // Many TO MANY REALTION WITH COUSTOMER
+  coustomers  Coustomer[] @relation(fields: [customarIds], references: [id]) // Many TO MANY REALTION WITH COUSTOMER
 
   orderIds String[] @db.ObjectId // ONE TO MANY REALTION WITH ORDER
   orders   Order[]  @relation(fields: [orderIds], references: [id]) // Many TO MANY REALTION WITH 
@@ -149,7 +149,7 @@ model Order {
   Product   Product[] @relation(fields: [productId], references: [id]) // ONE TO MANY REALTION WITH PRODUCT
 
   customarId String     @unique @db.ObjectId
-  Coustomers Coustomers @relation(fields: [customarId], references: [id]) // ONE TO MANY REALTION WITH COUSTOMER
+  Coustomers Coustomer @relation(fields: [customarId], references: [id]) // ONE TO MANY REALTION WITH COUSTOMER
 
   createdAt DateTime @default(now()) @db.Timestamp()
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
