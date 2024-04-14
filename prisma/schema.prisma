@@ -13,9 +13,107 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  slug     String    @unique
-  title    String
-  body     String
+model Users {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  email    String @unique
+  password String
+  otp      String @default("000000")
+
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
+}
+
+model Coustomers {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  email String
+  address   String
+  country   String
+  city      String
+  state     String
+  zip       String
+  firstName String
+  lastName  String
+  phone     String
+  
+
+  purchaseProductIds String[]  @db.ObjectId
+  products           Product[] @relation(fields: [purchaseProductIds], references: [id])
+
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
+}
+
+model Product {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  title      String
+  shortDesc  String
+  longDesc   String
+  price      Int
+  images     String[]
+  category   String
+  tags       String[]
+  stocks     Int
+  type       String
+  life       String
+  discount   Int
+  isDiscount Boolean  @default(false)
+
+  ratings Rating[] // ONE TO MANY REALTION WITH RATING 
+
+  sellerId String @unique @db.ObjectId
+  Seller   Seller @relation(fields: [sellerId], references: [id]) // ONE TO MANY REALTION WITH SELLER
+
+  categoryId String   @unique @db.ObjectId
+  Category   Category @relation(fields: [categoryId], references: [id]) // ONE TO MANY REALTION WITH CATEGORY
+
+  customarIds String[]     @db.ObjectId
+  coustomers  Coustomers[] @relation(fields: [customarIds], references: [id]) // Many TO MANY REALTION WITH COUSTOMER
+
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
+}
+
+model Category {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  categoryName String
+  categoryDesc String?
+  categoryImg  String?
+
+  products Product[] // ONE TO MANY REALTION WITH PRODUCT
+
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
+}
+
+model Seller {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  brandName String
+  brandDesc String
+  brandLogo String
+  email     String @unique
+  password  String
+  otp       String @default("000000")
+  address   String
+  phone     String
+
+  products Product[] // ONE TO MANY REALTION WITH PRODUCT
+
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
+}
+
+model Rating {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  count    Int
+  star     Int     @default(0)
+  comments String?
+
+  productId String  @unique @db.ObjectId
+  Product   Product @relation(fields: [productId], references: [id]) // ONE TO MANY REALTION WITH PRODUCT 
+
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
 }

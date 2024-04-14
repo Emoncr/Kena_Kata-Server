@@ -22,12 +22,4 @@ import productRoute from "./routes/product.route.js";
 // Routes
 app.use("/api", productRoute);
 
-
-
-
-
-
-
-
-
 export default app;
