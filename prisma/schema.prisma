@@ -26,7 +26,7 @@ model Users {
 model Coustomers {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  email String
+  email     String
   address   String
   country   String
   city      String
@@ -35,10 +35,11 @@ model Coustomers {
   firstName String
   lastName  String
   phone     String
-  
 
   purchaseProductIds String[]  @db.ObjectId
   products           Product[] @relation(fields: [purchaseProductIds], references: [id])
+
+  orderIds Order[] // ONE TO MANY REALTION WITH ORDER
 
   createdAt DateTime @default(now()) @db.Timestamp()
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
@@ -70,6 +71,9 @@ model Product {
 
   customarIds String[]     @db.ObjectId
   coustomers  Coustomers[] @relation(fields: [customarIds], references: [id]) // Many TO MANY REALTION WITH COUSTOMER
+
+  orderIds String[] @db.ObjectId // ONE TO MANY REALTION WITH ORDER
+  orders   Order[]  @relation(fields: [orderIds], references: [id]) // Many TO MANY REALTION WITH 
 
   createdAt DateTime @default(now()) @db.Timestamp()
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
@@ -113,6 +117,38 @@ model Rating {
 
   productId String  @unique @db.ObjectId
   Product   Product @relation(fields: [productId], references: [id]) // ONE TO MANY REALTION WITH PRODUCT 
+
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
+}
+
+model Subscriber {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
+}
+
+model Contact {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String
+  subject   String
+  message   String
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
+}
+
+model Order {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  status String
+  total  Int
+
+  productId String[]  @unique @db.ObjectId
+  Product   Product[] @relation(fields: [productId], references: [id]) // ONE TO MANY REALTION WITH PRODUCT
+
+  customarId String     @unique @db.ObjectId
+  Coustomers Coustomers @relation(fields: [customarId], references: [id]) // ONE TO MANY REALTION WITH COUSTOMER
 
   createdAt DateTime @default(now()) @db.Timestamp()
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()

@@ -18,8 +18,16 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 
 // Importing Routes
 import productRoute from "./routes/product.route.js";
+import userRoute from "./routes/user.route.js";
+
+
+
 
 // Routes
-app.use("/api", productRoute);
+app.use("/api/product", productRoute);
+app.use("/api/user", userRoute);
+
+
+
 
 export default app;
