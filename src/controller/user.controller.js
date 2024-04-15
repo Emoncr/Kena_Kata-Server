@@ -5,6 +5,7 @@ import { generateToken } from "../utils/JwtHelper.js";
 
 const prisma = new PrismaClient();
 
+// ----------- USER SING UP CONTROLLER -------------//
 export const signUp = async (req, res, next) => {
   const { name, email, password } = req.body;
   const hashedPassword = bcrypt.hashSync(password, 10);
@@ -23,6 +24,7 @@ export const signUp = async (req, res, next) => {
   }
 };
 
+// ----------- USER SING IN CONTROLLER -------------//
 export const singIn = async (req, res, next) => {
   const { email, pass } = req.body;
   try {
@@ -45,7 +47,6 @@ export const singIn = async (req, res, next) => {
     const token = generateToken({ email: user.email, id: user._id });
     const expirationDuration = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); //FOR 7 DAYS
 
-    
     res
       // SETTIING COOKIES
       .cookie("token", token, {
