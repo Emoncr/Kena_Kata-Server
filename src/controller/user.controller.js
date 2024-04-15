@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { errorResponse, successResponse } from "../utils/apiResponse.js";
 import { PrismaClient } from "@prisma/client";
+import { generateToken } from "../utils/JwtHelper.js";
 
 const prisma = new PrismaClient();
 
@@ -41,9 +42,23 @@ export const singIn = async (req, res, next) => {
     }
     const { password, otp, ...rest } = user;
 
+    const token = generateToken({ email: user.email, id: user._id });
+    const expirationDuration = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); //FOR 7 DAYS
 
-    res.status(200).json(successResponse("User logged in successfully", rest));
+    
+    res
+      // SETTIING COOKIES
+      .cookie("token", token, {
+        expires: expirationDuration,
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        path: "/",
+      })
+      .status(200)
+      .json(successResponse("User logged in successfully", rest));
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
