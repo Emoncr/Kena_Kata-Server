@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 // Importing Routes
 import productRoute from "./routes/product.route.js";
 import userRoute from "./routes/user.route.js";
-import sallerRoute from "./routes/saller.route.js";
+import sellerRoute from "./routes/saller.route.js";
 
 const app = express();
 
@@ -30,7 +30,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/product", productRoute);
 app.use("/api/user", userRoute);
-app.use("/api/saller", sallerRoute);
+app.use("/api/seller", sellerRoute);
 
 // Error Handling
 app.use(apiError);

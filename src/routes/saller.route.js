@@ -1,8 +1,8 @@
 import express from "express";
-import { sallerSignUp } from "../controller/saller.cotroller.js";
+import { sellerSignUp } from "../controller/saller.cotroller.js";
 
 const router = express.Router();
 
-router.post("/signup", sallerSignUp);
+router.post("/signup", sellerSignUp);
 
 export default router;
