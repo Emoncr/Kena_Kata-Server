@@ -43,8 +43,12 @@ export const singIn = async (req, res, next) => {
       return res.status(400).json(errorResponse(400, "Authentication failed"));
     }
     const { password, otp, ...rest } = user;
-
-    const token = generateToken({ email: user.email, id: user._id });
+    console.log(user);
+    const token = generateToken({
+      email: user.email,
+      id: user.id,
+      role: user.role,
+    });
     const expirationDuration = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); //FOR 7 DAYS
 
     res

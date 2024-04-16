@@ -1,9 +1,9 @@
 import express from "express";
+import { createProduct } from "../controller/product.controller.js";
+import { verifyToken } from "../middlewares/verifyUser.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send("Hello from product route");
-});
+router.post("/create", verifyToken, createProduct);
 
 export default router;
