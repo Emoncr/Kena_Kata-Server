@@ -13,12 +13,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  SELLER
+  BUYER
+  ADMIN
+}
+
 model User {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
   name     String
   email    String @unique
   password String
   otp      String @default("000000")
+  role     Role   @default(USER)
+
+  Coustomer Coustomer?
+  Seller    Seller?
 
   createdAt DateTime @default(now()) @db.Timestamp()
   updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
@@ -27,15 +38,22 @@ model User {
 model Coustomer {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  email     String
-  address   String
-  country   String
-  city      String
-  state     String
-  zip       String
-  firstName String
-  lastName  String
-  phone     String
+  buyerName  String
+  buyerEmail String
+  address    String
+  country    String
+  city       String
+  state      String
+  zip        String
+  firstName  String
+  lastName   String
+  phone      String
+  otp        String @default("000000")
+
+  role Role @default(BUYER)
+
+  userId String @unique @db.ObjectId
+  User   User   @relation(fields: [userId], references: [id]) // ONE TO MANY REALTION WITH USER
 
   purchaseProductIds String[]  @db.ObjectId
   products           Product[] @relation(fields: [purchaseProductIds], references: [id])
@@ -54,7 +72,6 @@ model Product {
   longDesc   String
   price      Int
   images     String[]
-  category   String
   tags       String[]
   stocks     Int
   type       String
@@ -67,10 +84,10 @@ model Product {
   sellerId String @unique @db.ObjectId
   Seller   Seller @relation(fields: [sellerId], references: [id]) // ONE TO MANY REALTION WITH SELLER
 
-  categoryId String   @unique @db.ObjectId
-  Category   Category @relation(fields: [categoryId], references: [id]) // ONE TO MANY REALTION WITH CATEGORY
+  category   Category @relation(fields: [categoryId], references: [id]) // ONE TO MANY REALTION WITH CATEGORY
+  categoryId String   @db.ObjectId
 
-  customarIds String[]     @db.ObjectId
+  customarIds String[]    @db.ObjectId
   coustomers  Coustomer[] @relation(fields: [customarIds], references: [id]) // Many TO MANY REALTION WITH COUSTOMER
 
   orderIds String[] @db.ObjectId // ONE TO MANY REALTION WITH ORDER
@@ -103,6 +120,10 @@ model Seller {
   otp       String @default("000000")
   address   String
   phone     String
+
+  role   Role   @default(SELLER)
+  userId String @unique @db.ObjectId
+  User   User   @relation(fields: [userId], references: [id]) // ONE TO MANY REALTION WITH USER
 
   products Product[] // ONE TO MANY REALTION WITH PRODUCT
 
@@ -148,7 +169,7 @@ model Order {
   productId String[]  @unique @db.ObjectId
   Product   Product[] @relation(fields: [productId], references: [id]) // ONE TO MANY REALTION WITH PRODUCT
 
-  customarId String     @unique @db.ObjectId
+  customarId String    @unique @db.ObjectId
   Coustomers Coustomer @relation(fields: [customarId], references: [id]) // ONE TO MANY REALTION WITH COUSTOMER
 
   createdAt DateTime @default(now()) @db.Timestamp()

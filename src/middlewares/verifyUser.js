@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
+import { errorResponse } from "../utils/apiResponse.js";
 
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.token;
+
   if (!token) {
     return next(errorResponse(401, "Please login first"));
   }
@@ -9,7 +11,9 @@ export const verifyToken = (req, res, next) => {
     if (err) {
       return next(errorResponse(401, "Unauthorized request"));
     }
-    req.user = user;
+    // console.log(user);
+    // req.user = user;
+    console.log(user);
     next();
   });
 };
