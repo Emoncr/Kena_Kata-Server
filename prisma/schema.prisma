@@ -29,7 +29,8 @@ model User {
   role       Role   @default(USER)
   profileImg String @default("https://res.cloudinary.com/du6ditswt/image/upload/v1713274552/z2k7et50bwwicdre85nl.png")
 
-  sellerId  Seller?
+  sellerId Seller?
+
   Coustomer Coustomer?
   createdAt DateTime   @default(now()) @db.Timestamp()
   updatedAt DateTime   @default(now()) @updatedAt @db.Timestamp()
@@ -77,7 +78,7 @@ model Product {
 
   ratings Rating[] // ONE TO MANY REALTION WITH RATING 
 
-  sellerId String @unique @db.ObjectId
+  sellerId String @db.ObjectId
   Seller   Seller @relation(fields: [sellerId], references: [id]) // ONE TO MANY REALTION WITH SELLER
 
   category   Category @relation(fields: [categoryId], references: [id]) // ONE TO MANY REALTION WITH CATEGORY
