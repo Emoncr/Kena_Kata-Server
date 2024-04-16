@@ -13,6 +13,7 @@ export const verifyToken = (req, res, next) => {
     }
     req.userId = user.id;
     req.userRole = user.role;
+    req.userEmail = user.email;
     next();
   });
 };

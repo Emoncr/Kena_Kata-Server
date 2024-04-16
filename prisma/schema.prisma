@@ -38,17 +38,15 @@ model User {
 model Coustomer {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  buyerName  String
-  buyerEmail String
-  address    String
-  country    String
-  city       String
-  state      String
-  zip        String
-  firstName  String
-  lastName   String
-  phone      String
-  otp        String @default("000000")
+  buyerName String
+  address   String
+  country   String
+  city      String
+  state     String
+  zip       String
+  firstName String
+  lastName  String
+  phone     String
 
   purchaseProductIds String[]  @db.ObjectId
   products           Product[] @relation(fields: [purchaseProductIds], references: [id])
@@ -113,9 +111,6 @@ model Seller {
   brandName String
   brandDesc String
   brandLogo String
-  email     String @unique
-  password  String
-  otp       String @default("000000")
   address   String
   phone     String
 

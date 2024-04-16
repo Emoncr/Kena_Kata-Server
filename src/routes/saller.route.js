@@ -1,8 +1,9 @@
 import express from "express";
-import { sallerSignUp } from "../controller/saller.cotroller.js";
+import { sellerSignUp } from "../controller/saller.cotroller.js";
+import { verifyToken } from "../middlewares/verifyUser.js";
 
 const router = express.Router();
 
-router.post("/signup", sallerSignUp);
+router.post("/signup", verifyToken, sellerSignUp);
 
 export default router;
