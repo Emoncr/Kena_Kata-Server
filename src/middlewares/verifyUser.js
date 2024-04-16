@@ -11,9 +11,8 @@ export const verifyToken = (req, res, next) => {
     if (err) {
       return next(errorResponse(401, "Unauthorized request"));
     }
-    // console.log(user);
-    // req.user = user;
-    console.log(user);
+    req.userId = user.id;
+    req.userRole = user.role;
     next();
   });
 };
