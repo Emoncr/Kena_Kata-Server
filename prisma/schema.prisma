@@ -21,18 +21,18 @@ enum Role {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  email    String @unique
-  password String
-  otp      String @default("000000")
-  role     Role   @default(USER)
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  email      String @unique
+  password   String
+  otp        String @default("000000")
+  role       Role   @default(USER)
+  profileImg String @default("https://res.cloudinary.com/du6ditswt/image/upload/v1713274552/z2k7et50bwwicdre85nl.png")
 
+  sellerId  Seller?
   Coustomer Coustomer?
-  Seller    Seller?
-
-  createdAt DateTime @default(now()) @db.Timestamp()
-  updatedAt DateTime @default(now()) @updatedAt @db.Timestamp()
+  createdAt DateTime   @default(now()) @db.Timestamp()
+  updatedAt DateTime   @default(now()) @updatedAt @db.Timestamp()
 }
 
 model Coustomer {
@@ -50,13 +50,11 @@ model Coustomer {
   phone      String
   otp        String @default("000000")
 
-  role Role @default(BUYER)
-
-  userId String @unique @db.ObjectId
-  User   User   @relation(fields: [userId], references: [id]) // ONE TO MANY REALTION WITH USER
-
   purchaseProductIds String[]  @db.ObjectId
   products           Product[] @relation(fields: [purchaseProductIds], references: [id])
+
+  userId String @unique @db.ObjectId
+  User   User   @relation(fields: [userId], references: [id])
 
   orderIds Order[] // ONE TO MANY REALTION WITH ORDER
 
@@ -121,9 +119,8 @@ model Seller {
   address   String
   phone     String
 
-  role   Role   @default(SELLER)
   userId String @unique @db.ObjectId
-  User   User   @relation(fields: [userId], references: [id]) // ONE TO MANY REALTION WITH USER
+  User   User   @relation(fields: [userId], references: [id])
 
   products Product[] // ONE TO MANY REALTION WITH PRODUCT
 

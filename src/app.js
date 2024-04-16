@@ -1,11 +1,12 @@
 import express from "express";
 import cors from "cors";
 import { apiError } from "./middlewares/apiError.js";
+import cookieParser from "cookie-parser";
 
 // Importing Routes
 import productRoute from "./routes/product.route.js";
 import userRoute from "./routes/user.route.js";
-import cookieParser from "cookie-parser";
+import sallerRoute from "./routes/saller.route.js";
 
 const app = express();
 
@@ -26,10 +27,10 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cookieParser());
 
-
 // Routes
 app.use("/api/product", productRoute);
 app.use("/api/user", userRoute);
+app.use("/api/saller", sallerRoute);
 
 // Error Handling
 app.use(apiError);
