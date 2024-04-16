@@ -5,5 +5,4 @@ import { verifyToken } from "../middlewares/verifyUser.js";
 const router = express.Router();
 
 router.post("/signup", verifyToken, sellerSignUp);
-
 export default router;

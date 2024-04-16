@@ -5,7 +5,13 @@ const prisma = new PrismaClient();
 
 export const createProduct = async (req, res, next) => {
   const reqBody = req.body;
-  if (req.userRole !== "SELLER" || req.userRole !== "ADMIN")
+  console.log(req.userRole);
+  if (req.userId !== reqBody.sellerId)
+    // Checking valid user
+    return next(errorResponse(401, "Unauthorized request"));
+
+  if (req.userRole !== "SELLER")
+    // Checking user role
     return next(errorResponse(401, `${req.userRole} can't create product`));
 
   try {

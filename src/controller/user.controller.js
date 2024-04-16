@@ -16,6 +16,12 @@ export const signUp = async (req, res, next) => {
         email: email,
         password: hashedPassword,
       },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        profileImg: true,
+      },
     });
     const { password, otp, ...rest } = result;
     res.status(200).json(successResponse("User created successfully", rest));
@@ -26,11 +32,18 @@ export const signUp = async (req, res, next) => {
 
 // ----------- USER SING IN CONTROLLER -------------//
 export const singIn = async (req, res, next) => {
-  const { email, pass } = req.body;
   try {
     const user = await prisma.User.findUnique({
       where: {
-        email: email,
+        email: req.body.email,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        profileImg: true,
+        password: true,
+        role: true,
       },
     });
     if (!user) {
@@ -38,11 +51,11 @@ export const singIn = async (req, res, next) => {
         .status(400)
         .json(errorResponse(400, "User not found with this email"));
     }
-    const isMatch = bcrypt.compareSync(pass, user.password);
+    const isMatch = bcrypt.compareSync(req.body.password, user.password);
     if (!isMatch) {
       return res.status(400).json(errorResponse(400, "Authentication failed"));
     }
-    const { password, otp, ...rest } = user;
+    const { password, ...rest } = user;
     console.log(user);
     const token = generateToken({
       email: user.email,
